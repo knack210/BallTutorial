@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,18 +6,20 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public float speed;
-    public Text countText;
+    public Text countText, scoreText;
     public Text winText;
 
     private Rigidbody rb;
-    private int count;
+    private int count, score;
 
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        score = 0;
         SetCountText();
         winText.text = "";
+
     }
 
     void Update ()
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         rb.AddForce(movement * speed);
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -44,6 +47,17 @@ public class PlayerController : MonoBehaviour {
         {
             other.gameObject.SetActive(false);
             count = count + 1;
+            score = score + 1;
+            SetCountText();
+
+            
+        }
+
+        else if (other.gameObject.CompareTag("Penalty"))
+        {
+            other.gameObject.SetActive(false);
+            if (score > 0)
+                score = score - 1;
             SetCountText();
         }
     }
@@ -51,9 +65,10 @@ public class PlayerController : MonoBehaviour {
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if (count >= 12)
+        scoreText.text = "Score: " + score.ToString();
+        if (count % 12 == 0)
         {
-            winText.text = "You Win!";
+            winText.text = "You Finished with a score of: "+score.ToString();
         }
     }
 }
