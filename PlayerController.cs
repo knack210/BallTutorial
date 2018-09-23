@@ -50,7 +50,10 @@ public class PlayerController : MonoBehaviour {
             score = score + 1;
             SetCountText();
 
-            
+           if (count == 12)
+            {
+                transform.position = new Vector3(20.0f,0.5f,9.0f);
+            }
         }
 
         else if (other.gameObject.CompareTag("Penalty"))
@@ -66,7 +69,7 @@ public class PlayerController : MonoBehaviour {
     {
         countText.text = "Count: " + count.ToString();
         scoreText.text = "Score: " + score.ToString();
-        if (count % 12 == 0)
+        if (count == 19)
         {
             winText.text = "You Finished with a score of: "+score.ToString();
         }
